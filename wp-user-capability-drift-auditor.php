@@ -8,6 +8,7 @@
  * Author URI: https://github.com/TABARC-Code
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: wp-user-capability-drift-auditor
  *
  * Why this exists:
  * Permissions on WordPress sites do not stay stable. Plugins add caps. Themes add caps. Someone "temporarily" promotes an editor.
@@ -130,7 +131,7 @@ if ( ! class_exists( 'WP_User_Capability_Drift_Auditor' ) ) {
         }
 
         public function inject_plugin_list_icon_css() {
-            $icon_url = esc_url( $this->get_brand_icon_url() );
+            $icon_url = $this->get_brand_icon_url();
             ?>
             <style>
                 .wp-list-table.plugins tr[data-slug="wp-user-capability-drift-auditor"] .plugin-title strong::before {
@@ -298,7 +299,7 @@ if ( ! class_exists( 'WP_User_Capability_Drift_Auditor' ) ) {
 
         public function handle_export_json() {
             if ( ! current_user_can( 'manage_options' ) ) {
-                wp_die( 'No.' );
+                wp_die( esc_html__( 'You do not have permission to export this audit.', 'wp-user-capability-drift-auditor' ), '', array( 'response' => 403 ) );
             }
 
             check_admin_referer( 'wucda_export_json' );
